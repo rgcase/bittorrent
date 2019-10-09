@@ -1,5 +1,5 @@
-package com.rgcase.bittorrent.torrentfile.encoding
+package com.rgcase.bittorrent.torrentfile
 
-class TorrentFile {
+import com.rgcase.bittorrent.torrentfile.encoding.ast.BTDict
 
-}
+case class TorrentFile(dict: BTDict)

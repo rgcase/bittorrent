@@ -1,17 +1,13 @@
-package com.rgcase.bittorrent.encoding
+package com.rgcase.bittorrent.torrentfile.encoding
 
 import akka.util.ByteString
-import com.rgcase.bittorrent.ast._
+import com.rgcase.bittorrent.torrentfile.TorrentFile
+import com.rgcase.bittorrent.torrentfile.encoding.ast._
 
 object Encoder {
 
-  def encode(btvalue: BTValue): ByteString = btvalue match {
-    case BTEmpty      => encodeEmpty
-    case bt: BTString => encodeBTString(bt)
-    case bt: BTNumber => encodeBTNumber(bt)
-    case bt: BTDict   => encodeBTDict(bt)
-    case bt: BTList   => encodeBTList(bt)
-  }
+  def encode(torrent: TorrentFile): ByteString =
+    encodeBTDict(torrent.dict)
 
   private val dividerByte = ':'.toByte
   private val intByte     = 'i'.toByte
@@ -31,10 +27,18 @@ object Encoder {
     dictByte +:
       btdict
         .dict
-        .map { case (k ,v) => encodeBTString(k) ++ encode(v) }
+        .map { case (k ,v) => encodeBTString(k) ++ encodeBTValue(v) }
         .foldLeft(ByteString.empty) { case (acc, v) => acc ++ v } :+ 'e'.toByte
 
   private def encodeBTList(btlist: BTList) =
-    listByte +: btlist.list.foldLeft(ByteString.empty) { case (acc, v) => acc ++ encode(v) } :+ endByte
+    listByte +: btlist.list.foldLeft(ByteString.empty) { case (acc, v) => acc ++ encodeBTValue(v) } :+ endByte
+
+  private def encodeBTValue(btvalue: BTValue): ByteString = btvalue match {
+    case BTEmpty => encodeEmpty
+    case s: BTString => encodeBTString(s)
+    case n: BTNumber => encodeBTNumber(n)
+    case dict: BTDict => encodeBTDict(dict)
+    case list: BTList => encodeBTList(list)
+  }
 
 }
