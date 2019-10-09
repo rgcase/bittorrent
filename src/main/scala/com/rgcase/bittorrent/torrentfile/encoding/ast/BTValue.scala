@@ -1,4 +1,4 @@
-package com.rgcase.bittorrent.ast
+package com.rgcase.bittorrent.torrentfile.encoding.ast
 
 import akka.util.ByteString
 
@@ -15,4 +15,6 @@ object BTValue {
     def compare(x: BTString, y: BTString) =
       implicitly[Ordering[String]].compare(x.string.mkString(""), y.string.mkString(""))
   }
+
+
 }

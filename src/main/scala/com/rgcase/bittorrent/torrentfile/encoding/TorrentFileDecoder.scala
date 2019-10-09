@@ -1,4 +1,4 @@
-package com.rgcase.bittorrent.encoding
+package com.rgcase.bittorrent.torrentfile.encoding
 
 import java.nio.file.Paths
 
@@ -8,7 +8,7 @@ import akka.util.ByteString
 
 import scala.concurrent.ExecutionContext
 
-object TorrentDecoder {
+object TorrentFileDecoder {
 
   def fileBytes(path: String)(implicit mat: ActorMaterializer, ec: ExecutionContext) =
     FileIO

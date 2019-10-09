@@ -1,13 +1,13 @@
-package com.rgcase.bittorrent.encoding
+package com.rgcase.bittorrent.torrentfile.encoding
 
 import akka.util.ByteString
-import com.rgcase.bittorrent.ast._
+import com.rgcase.bittorrent.torrentfile.TorrentFile
+import com.rgcase.bittorrent.torrentfile.encoding.ast._
 
 object Decoder {
 
-  def decode(bytes: ByteString): BTValue = {
-    nextType(bytes, 0)._1
-  }
+  def decode(bytes: ByteString): TorrentFile =
+    TorrentFile(decodeDictionary(bytes,0)._1)
 
   private val dividerByte = ':'.toByte
   private val intByte     = 'i'.toByte
